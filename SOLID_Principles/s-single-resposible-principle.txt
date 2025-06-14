@@ -1,0 +1,122 @@
+
+
+1. S (single resposibility principle) : 
+
+Let’s use the Single Responsibility Principle (SRP) in a real-world example: building an order processing system for an e-commerce platform. The system processes orders, calculates totals, and sends an email confirmation.
+Problem
+We need to:
+Calculate the order total.
+Save the order to a database.
+Send an email confirmation.
+
+Violating SRP
+In a single class/module, we might handle everything, which makes the code harder to maintain:
+class OrderProcessor {
+    process(order) {
+        // Calculate total
+        order.total = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        // Save to database
+        console.log("Order saved to DB:", order);
+
+        // Send email confirmation
+        console.log(`Email sent to ${order.customerEmail}: Your order is confirmed.`);
+    }
+}
+
+// Usage
+const order = {
+    customerEmail: "customer@example.com",
+    items: [
+        { name: "Product 1", price: 100, quantity: 2 },
+        { name: "Product 2", price: 50, quantity: 1 },
+    ],
+};
+const processor = new OrderProcessor();
+processor.process(order);
+This violates SRP because:
+process() handles calculation, database saving, and email sending.
+If any of these responsibilities change, the entire class needs to be modified.
+
+Applying SRP
+We break the responsibilities into separate classes/modules.
+OrderCalculator: Responsible for calculating the total.
+OrderRepository: Handles saving orders to the database.
+EmailService: Sends email confirmations.
+OrderProcessor: Orchestrates the process.
+Refactored Code
+OrderCalculator.js
+class OrderCalculator {
+    calculateTotal(order) {
+        return order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    }
+}
+
+module.exports = OrderCalculator;
+
+OrderRepository.js
+class OrderRepository {
+    save(order) {
+        console.log("Order saved to DB:", order);
+        // Add real DB saving logic here
+    }
+}
+
+module.exports = OrderRepository;
+
+EmailService.js
+class EmailService {
+    sendConfirmation(order) {
+        console.log(`Email sent to ${order.customerEmail}: Your order of $${order.total} is confirmed.`);
+        // Add real email sending logic here
+    }
+}
+
+module.exports = EmailService;
+
+OrderProcessor.js
+const OrderCalculator = require('./OrderCalculator');
+const OrderRepository = require('./OrderRepository');
+const EmailService = require('./EmailService');
+
+class OrderProcessor {
+    constructor() {
+        this.calculator = new OrderCalculator();
+        this.repository = new OrderRepository();
+        this.emailService = new EmailService();
+    }
+
+    process(order) {
+        // Calculate total
+        order.total = this.calculator.calculateTotal(order);
+
+        // Save to database
+        this.repository.save(order);
+
+        // Send email confirmation
+        this.emailService.sendConfirmation(order);
+    }
+}
+
+module.exports = OrderProcessor;
+
+Main.js
+const OrderProcessor = require('./OrderProcessor');
+
+const order = {
+    customerEmail: "customer@example.com",
+    items: [
+        { name: "Product 1", price: 100, quantity: 2 },
+        { name: "Product 2", price: 50, quantity: 1 },
+    ],
+};
+
+const processor = new OrderProcessor();
+processor.process(order);
+
+Advantages
+Maintainability: Each class has a single responsibility, so changes in email logic don’t affect the database logic.
+Reusability: Components like OrderCalculator and EmailService can be reused in other parts of the application.
+Testability: Each class can be unit-tested independently.
+
+

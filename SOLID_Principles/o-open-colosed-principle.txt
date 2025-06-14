@@ -1,0 +1,64 @@
+ Notification System
+Scenario:
+You need a system to send notifications through Email and SMS. You want to add new notification types (e.g., Push Notification) without modifying the existing notification system.
+
+Implementation:
+
+// Base Notification Class
+class Notification {
+  send(message) {
+    throw new Error('send method must be implemented');
+  }
+}
+
+// Email Notification
+class EmailNotification extends Notification {
+  send(message) {
+    console.log(`Sending Email: ${message}`);
+  }
+}
+
+// SMS Notification
+class SMSNotification extends Notification {
+  send(message) {
+    console.log(`Sending SMS: ${message}`);
+  }
+}
+
+// Adding a New Notification Type (e.g., Push Notification)
+class PushNotification extends Notification {
+  send(message) {
+    console.log(`Sending Push Notification: ${message}`);
+  }
+}
+
+// Notification Manager
+class NotificationManager {
+  constructor(notification) {
+    this.notification = notification;
+  }
+
+  notify(message) {
+    this.notification.send(message);
+  }
+}
+
+// Usage
+const emailNotification = new EmailNotification();
+const smsNotification = new SMSNotification();
+const pushNotification = new PushNotification();
+
+const manager1 = new NotificationManager(emailNotification);
+manager1.notify('Welcome to our service!');
+
+const manager2 = new NotificationManager(smsNotification);
+manager2.notify('Your OTP is 1234.');
+
+const manager3 = new NotificationManager(pushNotification);
+manager3.notify('You have a new message.');
+Key Points:
+Extendable: Adding PushNotification required no changes to existing Notification or NotificationManager code.
+
+Closed for Modification: Existing functionality for EmailNotification and SMSNotification remains intact.
+
+Open for Extension: New notification types can be added by creating new classes inheriting from Notification
