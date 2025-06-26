@@ -1,0 +1,71 @@
+Don’t force all child classes to support all parent behaviors.
+Instead, design the parent carefully, and only inherit when the "is-a" relationship makes sense — and when the child can fully support the parent’s promises (methods, contracts, behavior).
+
+class Bird {
+  fly() {
+    console.log("Flying high in the sky!");
+  }
+}
+
+class Ostrich extends Bird {
+  fly() {
+    throw new Error("Ostriches can't fly!");
+  }
+}
+
+function makeBirdFly(bird) {
+  bird.fly(); // We expect any bird to fly
+}
+
+const flyingBird = new Bird();
+const nonFlyingBird = new Ostrich();
+
+makeBirdFly(flyingBird);      // ✅ Works fine
+makeBirdFly(nonFlyingBird);   // ❌ Throws error — breaks LSP
+
+
+❗ Problem:
+You're treating Ostrich like any other Bird, but it can’t fly, so it breaks the parent class’s contract. That’s an LSP violation.
+
+
+Good Example: Fixed with Better Hierarchy
+js
+Copy
+Edit
+class Bird {
+  makeSound() {
+    console.log("Chirp chirp!");
+  }
+}
+
+class FlyingBird extends Bird {
+  fly() {
+    console.log("Flying high in the sky!");
+  }
+}
+
+class Sparrow extends FlyingBird {}
+
+class Ostrich extends Bird {
+  walk() {
+    console.log("Walking on the ground!");
+  }
+}
+
+function letItFly(bird) {
+  bird.fly();
+}
+
+const sparrow = new Sparrow();
+const ostrich = new Ostrich();
+
+letItFly(sparrow);   // ✅ OK
+// letItFly(ostrich); // ❌ Won't compile (correctly), as ostrich has no `fly` method
+✅ Key Fixes:
+We split Bird into:
+
+Bird (common behavior like makeSound)
+
+FlyingBird (only birds that can fly)
+
+Ostrich now does not pretend it can fly — so we can’t mistakenly treat it like a FlyingBird.

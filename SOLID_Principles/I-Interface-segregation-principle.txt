@@ -1,0 +1,103 @@
+What is Interface Segregation Principle?
+The Interface Segregation Principle (ISP) says:
+
+"Clients should not be forced to depend on interfaces they do not use."
+
+In simpler words:
+
+Don't create fat interfaces (interfaces with too many methods).
+
+Instead, split large interfaces into smaller, specific ones, so that classes only implement what they actually need.
+
+
+
+❌ Bad Example (ISP Violation)
+
+class Worker {
+  work() {
+    throw new Error("work() not implemented");
+  }
+
+  eat() {
+    throw new Error("eat() not implemented");
+  }
+}
+
+class HumanWorker extends Worker {
+  work() {
+    console.log("Human working...");
+  }
+
+  eat() {
+    console.log("Human eating...");
+  }
+}
+
+class RobotWorker extends Worker {
+  work() {
+    console.log("Robot working...");
+  }
+
+  eat() {
+    // ❌ Not needed — but forced to define
+    throw new Error("Robot doesn't eat!");
+  }
+}
+
+const human = new HumanWorker();
+human.work(); // ✅
+human.eat();  // ✅
+
+const robot = new RobotWorker();
+robot.work(); // ✅
+robot.eat();  // ❌ Throws error — ISP violation
+
+
+
+
+
+✅ Good Example (ISP Respected in JavaScript)
+Instead of a big parent class, split the responsibilities.
+
+// Separate behavior
+class Workable {
+  work() {
+    throw new Error("work() not implemented");
+  }
+}
+
+class Eatable {
+  eat() {
+    throw new Error("eat() not implemented");
+  }
+}
+
+// Now create only what you need
+class HumanWorker extends Workable {
+  work() {
+    console.log("Human working...");
+  }
+}
+
+Object.assign(HumanWorker.prototype, new Eatable()); // Mixin
+
+HumanWorker.prototype.eat = function () {
+  console.log("Human eating...");
+};
+
+class RobotWorker extends Workable {
+  work() {
+    console.log("Robot working...");
+  }
+}
+
+// Test
+const human = new HumanWorker();
+human.work(); // ✅
+human.eat();  // ✅
+
+const robot = new RobotWorker();
+robot.work(); // ✅
+// robot.eat(); // ❌ No such method = correct!
+
+
