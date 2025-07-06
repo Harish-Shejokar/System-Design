@@ -1,0 +1,77 @@
+🔁 Inheritance vs Composition (Direct & Practical)
+🔹 Inheritance → “IS-A” relationship
+Car is a Vehicle
+
+👨‍🔧 Real-world Example:
+A Car is a type of Vehicle, so it inherits its behavior like startEngine() or move().
+
+✅ Code (Inheritance)
+js
+Copy
+Edit
+// vehicle.js
+class Vehicle {
+  startEngine() {
+    console.log("Engine started");
+  }
+
+  move() {
+    console.log("Vehicle is moving");
+  }
+}
+
+// car.js
+class Car extends Vehicle {
+  playMusic() {
+    console.log("Playing music in the car");
+  }
+}
+
+const myCar = new Car();
+myCar.startEngine();  // from Vehicle
+myCar.move();         // from Vehicle
+myCar.playMusic();    // from Car
+🔎 Downside: If Vehicle grows large or changes, all child classes like Car, Truck are affected.
+
+🔹 Composition → “HAS-A” relationship
+Car has a Engine
+
+👨‍🔧 Real-world Example:
+A Car uses an Engine, but Engine can also be used in Bike, Truck — no inheritance, just reuse.
+
+✅ Code (Composition)
+js
+Copy
+Edit
+// engine.js
+class Engine {
+  start() {
+    console.log("Engine started");
+  }
+}
+
+// car.js
+class Car {
+  constructor() {
+    this.engine = new Engine();  // Car has an Engine
+  }
+
+  startCar() {
+    this.engine.start();  // use Engine behavior
+    console.log("Car is ready to go");
+  }
+}
+
+const myCar = new Car();
+myCar.startCar();
+🔎 Flexible: You can replace the Engine with a TurboEngine, or mock it during testing.
+
+✅ Summary Table
+Feature	Inheritance (is-a)	Composition (has-a)
+Relationship	Car is a Vehicle	Car has a Engine
+Flexibility	❌ Hard to change base class	✅ Easy to swap components
+Code Reuse	✅ Good for shared logic	✅ Better for flexibility
+Tightness	❌ Tightly coupled	✅ Loosely coupled
+Real-life Use	Class hierarchy	Independent, reusable modules
+
+If you're working in Node.js or React — prefer composition when possible.
