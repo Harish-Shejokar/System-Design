@@ -1,0 +1,54 @@
+-By DIP - Depend on Abstraction not on Concreate Class. 
+
+ What is Dependency Inversion Principle?
+High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+Abstractions should not depend on details. Details should depend on abstractions.
+
+💡 In Simple Words:
+Don't hardcode your dependencies. Instead, rely on abstractions (like interfaces), so your code is loosely coupled, easier to test, and more flexible.
+
+
+
+❌ Violation of Dependency Inversion Principle (DIP)
+java
+Copy
+Edit
+class ShoppingCart {
+    private CreditCard card = new CreditCard();
+}
+🚫 Why is this a violation?
+ShoppingCart (high-level module) depends directly on CreditCard (low-level module).
+
+This means it's tightly coupled — you can't swap CreditCard with another payment method like PayPal, UPI, etc., without modifying ShoppingCart.
+
+✅ Improved Version (Follows DIP)
+java
+Copy
+Edit
+interface PaymentMethod {
+    void pay(double amount);
+}
+
+class CreditCard implements PaymentMethod {
+    public void pay(double amount) {
+        System.out.println("Paid with credit card: " + amount);
+    }
+}
+
+class ShoppingCart {
+    private PaymentMethod paymentMethod;
+
+    public ShoppingCart(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public void checkout(double amount) {
+        paymentMethod.pay(amount);
+    }
+}
+🧠 Key Improvement:
+ShoppingCart now depends on PaymentMethod (an abstraction), not a concrete CreditCard.
+
+You can easily pass PayPal, UPI, or a MockPayment class when needed.
+
