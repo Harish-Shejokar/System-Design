@@ -5,10 +5,6 @@ Car is a Vehicle
 👨‍🔧 Real-world Example:
 A Car is a type of Vehicle, so it inherits its behavior like startEngine() or move().
 
-✅ Code (Inheritance)
-js
-Copy
-Edit
 // vehicle.js
 class Vehicle {
   startEngine() {
@@ -39,10 +35,7 @@ Car has a Engine
 👨‍🔧 Real-world Example:
 A Car uses an Engine, but Engine can also be used in Bike, Truck — no inheritance, just reuse.
 
-✅ Code (Composition)
-js
-Copy
-Edit
+
 // engine.js
 class Engine {
   start() {
@@ -64,7 +57,6 @@ class Car {
 
 const myCar = new Car();
 myCar.startCar();
-🔎 Flexible: You can replace the Engine with a TurboEngine, or mock it during testing.
 
 ✅ Summary Table
 Feature	Inheritance (is-a)	Composition (has-a)

@@ -11,9 +11,7 @@ Don't hardcode your dependencies. Instead, rely on abstractions (like interfaces
 
 
 ❌ Violation of Dependency Inversion Principle (DIP)
-java
-Copy
-Edit
+
 class ShoppingCart {
     private CreditCard card = new CreditCard();
 }
@@ -23,9 +21,7 @@ ShoppingCart (high-level module) depends directly on CreditCard (low-level modul
 This means it's tightly coupled — you can't swap CreditCard with another payment method like PayPal, UPI, etc., without modifying ShoppingCart.
 
 ✅ Improved Version (Follows DIP)
-java
-Copy
-Edit
+
 interface PaymentMethod {
     void pay(double amount);
 }
