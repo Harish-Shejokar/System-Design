@@ -1,0 +1,19 @@
+Singlenton patten ensure only one "Instance" of class is created 
+throughtout entire Application .
+
+key points - 
+1. only one object is allowed.
+2. Same object is Reused whenever needed.
+3. Useful when you need single shared Resource 
+eg - database connection, Logger module 
+
+myPersonal eg - I Created one Logger Module in Advantage care for all
+api's call same logger module is used by entire application.
+
+
+class Logger {
+
+    log(message){
+        console.log(`Logger --  ${message}`)
+    }
+}

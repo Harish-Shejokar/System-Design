@@ -1,0 +1,23 @@
+factory pattern is used when we dont want Create Object without 
+exposing intantiation logic the client.
+eg - Payment gateway, parser
+
+key-points : 
+1.client doesn't know the exact className.
+2.Centralize object creation logic.
+
+class paypal{
+    ----logic----
+}
+
+class stripe{
+    ----logic----
+}
+
+
+class paymentFactory{
+    switch(paymentMethod){
+        case "paypal" : return new Paypal();
+        case "stripe" : return new Stripe();
+    }
+}
