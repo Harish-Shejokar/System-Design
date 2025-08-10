@@ -1,0 +1,29 @@
+Q. Create one splitwise system-design in which user can Shared Expenses,
+Expenses can be split using Equal, Exact & Percentage.
+
+
+
+Approach : 
+
+user1 will type total expense amount which he want to split with user2, user3, now he want to split expense by - equal or exact or percentage among everyone. if user1 choose by Equal it will mean or 3, if user1 choose by Exact amount it will substract from total amount for all 3 users, if by percentage giving percentage to all 3 users and return give anwer.
+
+Output will come in console with splitted amount by equal/exact/percent and then amount of users with respective names (in percent case percent number also). 
+
+will Create class for creating users, 
+class for equal, exact & Percentage
+Split Class or Abstract Split class
+
+
+Schema Creation:
+
+User{
+    name,
+    userId,
+}
+
+splitExpense{
+    splitId,
+    totalAmount,
+    splitUsers : Array of User Ids,
+    splitby : string(exact,equal,percentage),
+}
